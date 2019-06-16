@@ -1,0 +1,36 @@
+<template>
+  <div class="hello">
+   	派单页
+  </div>
+</template>
+
+<script>
+
+export default {
+  data () {
+    return {
+      msg: ''
+    }
+  },
+  props:[],
+  methods: {
+		
+	},
+	created:function(){
+	
+	},
+	mounted:function(){
+		
+	}
+  
+  
+  
+}
+
+
+
+
+
+
+
+</script>

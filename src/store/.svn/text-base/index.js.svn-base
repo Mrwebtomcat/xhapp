@@ -1,0 +1,73 @@
+import Vue from "vue"
+import Vuex from "vuex"
+import langdata from "./lang.json"
+
+Vue.use(Vuex);
+
+//定义一个容器 状态
+let store = new Vuex.Store({
+	state:{
+		langetype:langdata['cn'],
+		loginState:0,
+		phonenum:true,
+		orderdata:false,        //ui展示
+		isOrderStyle:false,        //是否可以接单状态
+		watchgps:"123",			//发送定位定时器
+		latanlng:{
+			'lat':40.037411,
+			'lng': 116.311392
+		},
+		//出车默认数据
+		driverData:{      //存储订单消息json变量
+			id:1,
+		 	money:100,
+		 	time:"2018-7-12 04:39:00",
+		 	start:"中心万怡酒店",
+			end:"伊尔库茨克机场",
+			bz:"带有一个孩子，一件行李",
+			startjw:'',
+			endjw:'',
+			//出行方式
+			n_state:"1",
+			//是否携带儿童  0没有 1携带
+			n_ischild:0,
+			//携带儿童数量
+			vc_child_num :0,
+			//包车天数
+			n_day:1
+		}
+	},
+	mutations:{
+		//切换中文
+		cnlange(state,n){
+			state.langetype = langdata[n];
+		},
+		isLogin(state,n){
+			state.loginState = n;
+		},
+		checkPhone(state,phone){
+			if(!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(phone))){ 
+				state.phonenum = false;
+			}else{
+				state.phonenum = true;
+			}
+		},
+		orderSatus(state,n){//出车状态
+			state.isOrderStyle = n;
+		},
+		setPos(state,n){
+			state.latanlng = n;
+		},
+		chcunkOder(state,n){
+			state.orderdata = n;
+		},
+		changedriverData(state,obj){
+			state.driverData = obj;
+		},
+		changeGps(state,obj){
+			state.watchgps = obj;
+		}
+	}
+})
+
+export default store;

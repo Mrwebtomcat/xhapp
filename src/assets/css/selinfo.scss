@@ -1,0 +1,39 @@
+.selinfocon{
+    margin-top: 80px;
+    .ulcon{
+        background: #F5F5F5;
+        .mui-table-view-cell{
+            height: 100px;
+            align-items: center;
+            padding-top:0 ;
+            padding-bottom: 0;
+            background: #fff;
+            font-size:34px;
+            color: #333;
+            a{
+              display: flex;
+               padding-left: 28px;
+              height: 100%;
+              line-height: 100px;
+              margin-top: 5px;
+              align-items: center;
+            }
+            &.mt18{
+                margin-top: 18px;
+            }
+            .mui-navigate-right,.mui-push-right{
+                &:after{
+                    right: 28px;
+                }
+            }
+            .righttext{
+                @include posa;
+                top: 0;
+                right: 30px;
+            }
+            .mui-active{
+                background: transparent;
+            }
+        }
+    }
+}

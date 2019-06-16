@@ -1,0 +1,252 @@
+<!--produce by jack-->
+<template>
+  <div class="patchdetailcon">
+  	<navigBar class="navbar" :ShowUsericon="false"  :titleText="changlan['dispatchdetail']['ordedetail']" @checkMe="clickMe"></navigBar>
+ 		<googlemap ref="maps" class="mapcon" :startjw="getOderData.startjw" :endjw="getOderData.endjw"></googlemap>
+ 		<div class="usecard">
+ 			<ordercardpatch v-show="getOderData"  @gpsappstart="appstart" @gpsappend="appadresend"  @userarive="arive" @userend="end"  :cardType="btnstatus" :btnText="changlan" :cardata="getOderData"></ordercardpatch>
+ 		</div>
+ 		<dilogo v-if="showdilog" :lange="changlan"  @goorder="goorder" @stoporder="stoporder"></dilogo>
+  </div>
+</template>
+
+<script>
+import navigBar from '@/components/navigBar';//状态栏组件
+import ordercardpatch from '@/components/OrderCardDispatch';//信息卡片组件
+import googlemap from '@/components/GoogleMap';//地图组件
+import dilogo from '@/components/Dilogoinfo';//弹出窗
+import {mapGetters,mapMutations} from 'vuex';
+export default {
+  data () {
+    return {
+    	 uid:0,            //用户id
+       btnstatus:2,      //判断显示接到乘客还是显示到达终点按钮
+       showdilog:false,  //弹窗是否显示
+       routgoing:""    //出行页面路由参数
+       
+    }
+  },
+  computed:{
+		//获取store里面数据 
+  	changlan(){
+  		return this.$store.state.langetype
+  	},
+  	getOderData(){
+  		return this.$store.state.driverData
+  	}
+  },
+  props:[],
+  methods: {
+  	clickMe(){
+//		alert("这里不能点击返回，去掉返回按钮")
+  	},
+  	appstart(){
+  		let {startjw,start} = this.getOderData;
+  		startjw = JSON.parse(startjw);
+  		let that = this;
+//		console.log(startjw,"起点")
+  		//唤起app导航到 乘客起点
+  		
+  		mui.confirm("是否导航到达用户起点", " ", [this.changlan['index']['yes'],this.changlan['index']['no']], function(e) {
+				if (e.index != 1) {
+					that.$refs.maps.navigateWithMap({'lat':startjw.lat,'lng':startjw.lng},start,1);
+				}else{
+					try{wt.close();}catch(e){}
+				}
+			})
+  	},
+  	appadresend(){
+  		let {endjw,end} = this.getOderData;
+  		var that = this;
+  		endjw = JSON.parse(endjw);
+  		//唤起app导航到 乘客终点
+  		mui.confirm("是否导航到达用户终点", " ", [this.changlan['index']['yes'],this.changlan['index']['no']], function(e) {
+				if (e.index != 1) {
+					that.$refs.maps.navigateWithMap({'lat':endjw.lat,'lng':endjw.lng},end,2);
+				}else{
+					try{wt.close();}catch(e){}
+				}
+			})
+  		
+  	},
+  	//司机点击到达乘客起点按钮
+  	arive(id){
+  		
+  		var url = this.$BaseUrll+"/index/isDckqd";
+			var data = {
+				vc_drcode:this.uid,
+				vc_order_sn:id
+			};
+			try{var wt = plus.nativeUI.showWaiting();}catch(e){};
+			
+			var that = this;
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					
+					if(data['status']==1){
+						setTimeout(function(){
+							
+							try{wt.close();}catch(e){}
+							
+							//接到乘客规划路线
+  						that.btnstatus = 3;
+  						
+						},2000)
+					}else{
+							mui.toast(that.changlan['msgtip'][data['message']])
+						return false;
+					}
+				},"json"
+			);
+			
+  	},
+  	//司机点击到达终点
+  	end(id){
+  		
+  		var url = this.$BaseUrll+"/index/isAddress";
+			var data = {
+				vc_drcode:this.uid,
+				vc_order_sn:id
+			};
+			try{var wt = plus.nativeUI.showWaiting();}catch(e){};
+			var that = this;
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					
+					if(data['status']==1){
+
+						setTimeout(function(){
+							
+							try{wt.close();}catch(e){}
+							
+							//显示是否继续接单弹窗
+							that.showdilog = true;
+							
+						},2000)
+					}else{
+						mui.toast(that.changlan['msgtip'][data['message']])
+						return false;
+					}
+				},"json"
+			);
+  	},
+  	//继续接单
+  	goorder(){
+  		var that = this;
+			var url = this.$BaseUrll+"/index/updateState";
+			var data = {
+				vc_drcode:this.uid,
+				n_state:2
+			};
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					if(data['status']==1){
+							//继续接单
+							that.$store.commit("chcunkOder",false);
+							that.$store.commit("orderSatus",true);
+				  		that.$router.push({ name:'Index', params: {type: 1} });
+				  		
+					}else{
+							mui.toast(that.changlan['msgtip'][data['message']])
+						return false;
+					}
+				},"json"
+			);
+  	},
+  	stoporder(){
+			var that = this;
+			var url = this.$BaseUrll+"/index/updateState";
+			var data = {
+				vc_drcode:this.uid,
+				n_state:1
+			};
+			
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					if(data['status']==1){
+							//继续接单
+				  		that.$router.push({ name:'Index', params: {type: 0} });
+				  		that.$store.commit("chcunkOder",false);
+							that.$store.commit("orderSatus",false);
+					}else{
+							mui.toast(that.changlan['msgtip'][data['message']])
+						return false;
+					}
+				},"json"
+			);
+  	}
+	},
+	components:{
+		navigBar,
+		ordercardpatch,
+		googlemap,
+		dilogo
+	},
+	created:function(){
+		//用户id
+		this.uid = window.localStorage.getItem("uid");
+		//出行页路由参数取得之前操作的到达司机是否已经到达用户起点终点操作状态
+		this.routgoing = this.$route.query.satus;
+		
+		//记录用户异常关闭的状态  3显示达到终点按钮 4显示弹窗  
+		if(this.routgoing==1){
+			this.btnstatus = 3;
+		}else{
+			this.btnstatus = 2;
+		}
+	},
+	mounted:function(){
+		//console.log(this.getOderData)
+	}
+}
+
+</script>
+
+<style lang="scss" scoped>
+@import "../assets/css/minx.scss";
+@import "../assets/css/dispathdetail.scss";
+</style>
+<style type="text/css">
+	.usecard ul{
+		height: 70%;
+		overflow-y: scroll;
+	}
+	.usecard .btnlist{
+		margin-top: 0 !important;
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 14px;
+		margin: auto;
+		height: 92px;
+	}
+	.usecard .going-info-card  .moneybox{
+		top: 0rem !important;
+	}
+	.li_bz_tx{
+		display: flex;
+	}
+	.usecard .detialbtn{
+		margin:auto;
+		position: absolute;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	.usecard .going-info-card{
+		height:100%;
+	}
+	.usecard .going-info-card .cartheader{
+		margin-bottom: 30px !important;
+	}
+	.patchdetailcon .mapage{
+   position: absolute;
+   height: 53% !important;
+   top: 80px;
+   left: 0;
+   overflow: hidden;
+	}
+.patchdetailcon iframe + div,.patchdetailcon .gm-style-cc{
+	display: none;
+}
+</style>

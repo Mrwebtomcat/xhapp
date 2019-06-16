@@ -1,0 +1,580 @@
+{
+	"1": [{
+		"value": 1,
+		"type": 1,
+		"code": 1,
+		"text": "初中以下"
+	}, {
+		"value": 2,
+		"type": 1,
+		"code": 2,
+		"text": "初中"
+	}, {
+		"value": 3,
+		"type": 1,
+		"code": 3,
+		"text": "高中"
+	}, {
+		"value": 4,
+		"type": 1,
+		"code": 4,
+		"text": "大专"
+	}, {
+		"value": 5,
+		"type": 1,
+		"code": 5,
+		"text": "本科"
+	}, {
+		"value": 6,
+		"type": 1,
+		"code": 6,
+		"text": "研究生"
+	}, {
+		"value": 7,
+		"type": 1,
+		"code": 7,
+		"text": "硕士"
+	}, {
+		"value": 8,
+		"type": 1,
+		"code": 8,
+		"text": "博士"
+	}],
+	"2": [{
+		"value": 9,
+		"type": 2,
+		"code": 1,
+		"text": "3000"
+	}, {
+		"value": 10,
+		"type": 2,
+		"code": 2,
+		"text": "3000-5000"
+	}, {
+		"value": 11,
+		"type": 2,
+		"code": 3,
+		"text": "5000-8000"
+	}, {
+		"value": 12,
+		"type": 2,
+		"code": 4,
+		"text": "8000-10000"
+	}, {
+		"value": 13,
+		"type": 2,
+		"code": 5,
+		"text": "10000-15000"
+	}, {
+		"value": 14,
+		"type": 2,
+		"code": 6,
+		"text": "15000-20000"
+	}, {
+		"value": 15,
+		"type": 2,
+		"code": 7,
+		"text": "20000"
+	}],
+	"3": [{
+		"value": 16,
+		"type": 3,
+		"code": 1,
+		"text": "没有孩子"
+	}, {
+		"value": 17,
+		"type": 3,
+		"code": 2,
+		"text": "有孩子且住在一起"
+	}, {
+		"value": 18,
+		"type": 3,
+		"code": 3,
+		"text": "有孩子且偶尔会一起住"
+	}, {
+		"value": 19,
+		"type": 3,
+		"code": 4,
+		"text": "有孩子但不在身边"
+	}],
+	"4": [{
+		"value": 20,
+		"type": 4,
+		"code": 1,
+		"text": "认同闪婚"
+	}, {
+		"value": 21,
+		"type": 4,
+		"code": 2,
+		"text": "一年内"
+	}, {
+		"value": 22,
+		"type": 4,
+		"code": 3,
+		"text": "二年内"
+	}, {
+		"value": 23,
+		"type": 4,
+		"code": 4,
+		"text": "三年内"
+	}, {
+		"value": 24,
+		"type": 4,
+		"code": 5,
+		"text": "时机成熟就结"
+	}],
+	"5": [{
+		"value": 25,
+		"type": 5,
+		"code": 1,
+		"text": "不想要孩子"
+	}, {
+		"value": 26,
+		"type": 5,
+		"code": 2,
+		"text": "想要孩子"
+	}, {
+		"value": 27,
+		"type": 5,
+		"code": 3,
+		"text": "视情况而定"
+	}, {
+		"value": 28,
+		"type": 5,
+		"code": 4,
+		"text": "以后再告诉你"
+	}],
+	"6": [{
+		"value": 29,
+		"type": 6,
+		"code": 1,
+		"text": "我已找到正在交往的对象"
+	}, {
+		"value": 30,
+		"type": 6,
+		"code": 2,
+		"text": "我已找到真爱，即将踏上红毯"
+	}, {
+		"value": 31,
+		"type": 6,
+		"code": 3,
+		"text": "我最近忙，无法及时回复邮件"
+	}],
+	"7": [{
+		"value": 1,
+		"type": 7,
+		"code": 1,
+		"text": "未婚"
+	}, {
+		"value": 2,
+		"type": 7,
+		"code": 2,
+		"text": "离异"
+	}, {
+		"value": 3,
+		"type": 7,
+		"code": 3,
+		"text": "丧偶"
+	}],
+	"8": [{
+		"value": 1,
+		"type": 8,
+		"code": 1,
+		"text": "不喝酒"
+	}, {
+		"value": 2,
+		"type":8,
+		"code": 2,
+		"text": "稍微抽一点酒"
+	}, {
+		"value": 3,
+		"type": 8,
+		"code": 3,
+		"text": "酒喝得很多"
+	},{
+		"value": 4,
+		"type": 8,
+		"code": 4,
+		"text": "社交场合会喝酒"
+	}],
+	"9": [{
+		"value": 1,
+		"type": 8,
+		"code": 1,
+		"text": "不吸烟"
+	}, {
+		"value": 2,
+		"type":8,
+		"code": 2,
+		"text": "稍微抽一点烟"
+	}, {
+		"value": 3,
+		"type": 8,
+		"code": 3,
+		"text": "烟抽得很多"
+	},{
+		"value": 4,
+		"type": 8,
+		"code": 4,
+		"text": "社交场合会抽烟"
+	}],
+	"mz":[
+		{
+			"text":"蒙古族",
+			"value":1
+		},{
+			"text":"回族",
+			"value":2
+		},{
+			"text":"藏族",
+			"value":3
+		},{
+			"text":"朝鲜族",
+			"value":4
+		},{
+			"text":"维吾尔族",
+			"value":5
+		},{
+			"text":"苗族",
+			"value":6
+		},{
+			"text":"壮族",
+			"value":7
+		},{
+			"text":"满族",
+			"value":8
+		},{
+			"text":"布依族",
+			"value":9
+		},{
+			"text":"侗族",
+			"value":10
+		},{
+			"text":"彝族",
+			"value":11
+		},{
+			"text":"瑶族",
+			"value":12
+		},{
+			"text":"白族",
+			"value":13
+		},{
+			"text":"土家族",
+			"value":14
+		},{
+			"text":"哈尼族",
+			"value":15
+		},{
+			"text":"哈萨克族",
+			"value":16
+		},{
+			"text":"傣族",
+			"value":17
+		},{
+			"text":"黎族",
+			"value":18
+		},{
+			"text":"傈僳族",
+			"value":19
+		},{
+			"text":"佤族",
+			"value":20
+		},{
+			"text":"高山族",
+			"value":21
+		},{
+			"text":"畲族",
+			"value":22
+		},{
+			"text":"拉祜族",
+			"value":23
+		},{
+			"text":"水族",
+			"value":24
+		},{
+			"text":"东乡族",
+			"value":25
+		},{
+			"text":"纳西族",
+			"value":26
+		},{
+			"text":"景颇族",
+			"value":27
+		},{
+			"text":"柯尔克孜族",
+			"value":28
+		},{
+			"text":"土族",
+			"value":29
+		},{
+			"text":"达斡尔族",
+			"value":30
+		},{
+			"text":"仫佬族",
+			"value":31
+		},{
+			"text":"羌族",
+			"value":32
+		},{
+			"text":"布朗族",
+			"value":33
+		},{
+			"text":"撒拉族",
+			"value":34
+		},{
+			"text":"毛南族",
+			"value":35
+		},{
+			"text":"仡佬族",
+			"value":36
+		},{
+			"text":"锡伯族",
+			"value":37
+		},{
+			"text":"阿昌族",
+			"value":38
+		},{
+			"text":"普米族",
+			"value":39
+		},{
+			"text":"塔吉克族",
+			"value":40
+		},{
+			"text":"怒族",
+			"value":41
+		},{
+			"text":"乌孜别克族",
+			"value":42
+		},{
+			"text":"京族",
+			"value":43
+		},{
+			"text":"独龙族",
+			"value":44
+		},{
+			"text":"德昂族",
+			"value":45
+		},{
+			"text":"保安族",
+			"value":46
+		},{
+			"text":"鄂温克族",
+			"value":47
+		},{
+			"text":"俄罗斯族",
+			"value":48
+		},{
+			"text":"塔塔尔族",
+			"value":49
+		},{
+			"text":"裕固族",
+			"value":50
+		},{
+			"text":" 鄂伦春族",
+			"value":51
+		},{
+			"text":"赫哲族",
+			"value":52
+		},{
+			"text":"门巴族",
+			"value":53
+		},{
+			"text":"珞巴族",
+			"value":54
+		},{
+			"text":"基诺族",
+			"value":55
+		},{
+			"text":"汉族",
+			"value":56
+		}
+	],
+	"zhiye":[
+		{
+			"text":"销售",
+			"value":1
+		},
+		{
+			"text":"客户服务",
+			"value":2
+		},
+		{
+			"text":"计算机/互联网",
+			"value":3
+		},
+		{
+			"text":"通信/电子",
+			"value":4
+		},
+		{
+			"text":"生产/制造",
+			"value":5
+		},
+		{
+			"text":"物流/仓储",
+			"value":6
+		},
+		{
+			"text":"商贸/采购",
+			"value":7
+		},
+		{
+			"text":"人事/行政",
+			"value":8
+		},
+		{
+			"text":"高级管理",
+			"value":9
+		},
+		{
+			"text":"广告/市场",
+			"value":10
+		},
+		{
+			"text":"传媒/艺术",
+			"value":11
+		},
+		{
+			"text":"生物/制药",
+			"value":12
+		},
+		{
+			"text":"医疗/护理",
+			"value":13
+		},
+		{
+			"text":"金融/银行/保险",
+			"value":14
+		},
+		{
+			"text":"建筑/房地产",
+			"value":15
+		},
+		{
+			"text":"咨询/顾问",
+			"value":16
+		},
+		{
+			"text":"法律",
+			"value":17
+		},
+		{
+			"text":"财会/审计",
+			"value":18
+		},
+		{
+			"text":" 教育/科研",
+			"value":19
+		},
+		{
+			"text":"服务业",
+			"value":20
+		},
+		{
+			"text":"交通运输",
+			"value":21
+		},
+		{
+			"text":"政府机构",
+			"value":22
+		},
+		{
+			"text":"军人/警察",
+			"value":23
+		},
+		{
+			"text":"农林牧渔",
+			"value":24
+		},
+		{
+			"text":"自由职业",
+			"value":25
+		},
+		{
+			"text":"在校学生",
+			"value":26
+		},
+		{
+			"text":"待业",
+			"value":27
+		},
+		{
+			"text":"其他行业",
+			"value":28
+		}
+		
+	],
+	"xingzuo":[
+		{
+			"text":"白羊座",
+			"value":1
+		},
+		{
+			"text":"金牛座",
+			"value":2
+		},
+		{
+			"text":"双子座",
+			"value":3
+		},
+		{
+			"text":"巨蟹座",
+			"value":4
+		},
+		{
+			"text":"狮子座",
+			"value":5
+		},
+		{
+			"text":"处女座",
+			"value":6
+		},
+		{
+			"text":"天枰座",
+			"value":7
+		},
+		{
+			"text":"天蝎座",
+			"value":8
+		},
+		{
+			"text":"射手座",
+			"value":9
+		},
+		{
+			"text":"魔蝎座",
+			"value":10
+		},
+		{
+			"text":"水瓶座",
+			"value":11
+		},
+		{
+			"text":"双鱼座",
+			"value":12
+		}
+	],
+	"hours":[
+		{
+			"text":"和家人住",
+			"value":1
+		},
+		{
+			"text":"已购房",
+			"value":2
+		},
+		{
+			"text":"租房",
+			"value":3
+		},
+		{
+			"text":"打算婚后购房",
+			"value":4
+		},
+		{
+			"text":"在单位宿舍住",
+			"value":5
+		}
+	]
+	
+}

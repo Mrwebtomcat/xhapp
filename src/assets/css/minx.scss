@@ -1,0 +1,44 @@
+//复用的scss 公共库  如需要增加直接添加就好  使用时可以直接继承
+
+//颜色
+$c-fff:#fff;
+$c-333:#333;
+$c-f8700:#ff8700;
+$c-fdb913:#fdb913;
+
+//尺寸
+$w100:100%;
+$h100:100%;
+$w0:0;
+
+
+
+
+//公共类名
+@mixin w100h100{
+    width:$w100;
+    height:$h100;
+}
+@mixin oveflowtxt{
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+@mixin psr{
+   position: relative;
+}
+//定位
+@mixin posa{
+    position: absolute;
+}
+@mixin posr{
+    position: relative;
+}
+@mixin posta{
+    position: static;
+}
+@mixin left0{
+    left: 0;
+}
+@mixin right0{
+    right: 0;
+}

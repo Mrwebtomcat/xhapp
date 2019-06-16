@@ -1,0 +1,123 @@
+$autoplace-color:#3d465d;
+$c-fff:#fff;
+body{
+    background: red;
+}
+.pswforget{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    .loginform{
+//      width:600px ;
+//      margin:106px auto 0;
+        text-align: left;
+        margin-top: 80px;
+        form{
+            background: transparent;
+        }
+        .mui-input-group{
+            &:before,&:after{
+             display:none;
+            }
+        }
+        .btnnnn{
+            text-align: center;
+        }
+        .inpucom{
+            position: relative;
+            font-size: 32px;
+            color: $autoplace-color;
+            height: 50px;
+            line-height: 50px;
+        }
+        .mui-input-row label{
+            text-align: left;
+            width: 10%;
+            padding:0;
+            margin-right: 16px;
+            .iconfont{
+                font-size:40px;
+                margin-left: 28px;
+            }
+        }
+        .psw{
+//          margin-top: 20px;
+            padding: 0px 0;
+            
+        }
+        
+        .user,.psw{
+           @extend .inpucom;
+           input{
+               width: 80%;
+               margin-left: -10px;
+//             margin-top: 5px;
+               @extend .inpucom; 
+           }
+           .mui-icon-clear{
+                @extend .eirsicon;
+            }
+        }
+        .yzm{
+            .mui-hidden{
+                font-size:40px;
+                transform: translateY(20px);
+            }
+            .mui-icon-clear{
+                @extend .mui-hidden;
+            }
+        }
+        .fogetpsw{
+            margin-top: 30px;
+        }
+        .eirsicon{
+           font-size: 25px !important;
+           margin-right: 32px !important;
+           margin-top: 5px;
+           &.ative{
+               color: #007aff !important;
+           }
+        }
+           
+        .mui-input-group .mui-input-row{
+            position: relative;
+            overflow:visible; 
+            background: #fff;
+            display:flex; 
+            height: 100px;
+            align-items: center;
+            &:after{
+//              bottom: -16px;
+//              -webkit-transform: scaleY(1);
+//              -ms-transform: scaleY(1);
+//              transform: scaleY(1);
+                color: $autoplace-color;
+                left: 0;
+            }
+        }
+        .phones{
+          input{
+             flex:1;
+          }
+          button{
+              width: auto;
+              font-size: 26px;
+              color: #333;
+              margin-top: 0;
+              height: 60px;
+              padding:0 20px;
+              margin-right: 28px;
+          }
+        }
+        button{
+            width: 600px;
+            height: 78px;
+            border-radius: 8px;
+            font-size: 36px;
+            margin-top: 80px;
+            background: #ob8fe8;
+           
+        }
+       
+    }
+}

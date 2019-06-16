@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/BJXM-D/!svn/ver/3/driver/test/e2e
+END
+nightwatch.conf.js
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/BJXM-D/!svn/ver/3/driver/test/e2e/nightwatch.conf.js
+END
+runner.js
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/BJXM-D/!svn/ver/3/driver/test/e2e/runner.js
+END

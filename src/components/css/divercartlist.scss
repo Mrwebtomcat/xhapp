@@ -1,0 +1,37 @@
+.card_con{
+	width: calc(100% - 40px);
+	margin: auto;
+	margin-top:20px ;
+	min-height: 120px;
+	padding:40px  20px;
+	background: #fff;
+	border: 1px solid #d1d1d1;
+	border-radius: 4px;
+	.card_title{
+		display: flex;
+		position: relative;
+		.card_h1{
+			font-size: 34px;
+		}
+		.card_time{
+			font-size: 26px;
+			margin-left: 10px;
+		}
+		.closcard{
+		    font-size: 48px;
+		    position: absolute;
+		    right: 0;
+		    top: -10px;
+		}
+	}
+	.cardarea{
+		font-size:28px;
+		padding-top: 28px;
+		line-height: 40px;
+		text-indent: 56px;
+	    text-align: left;
+	}
+	&:last-child{
+        margin-bottom: 80px;
+    }
+}

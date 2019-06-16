@@ -1,0 +1,30 @@
+.patchdetailcon{
+   @include w100h100;
+   @include psr;
+    .navbar{
+        z-index: 999;
+        @include posa;
+        left: $w0;
+        top: $w0;
+        width: $w100;
+    }
+    .usecard{
+      z-index: 1000;
+      @include posa; 
+      background: $c-fff; 
+      width: $w100;
+      height:calc(47% - 80px);
+      left: $w0;
+      bottom: $w0;
+      .going-info-card{
+          width: $w100;
+//        min-height: 469px;
+          height: 100%;
+          -webkit-transform:translateY($w0);
+          transform:translateY($w0);
+          text-align: left;
+          border: transparent;
+      }
+      
+    }
+}

@@ -1,0 +1,110 @@
+$autoplace-color:#3d465d;
+$c-fff:#fff;
+.xmapp{
+    width: 100%;
+    height: 100%;
+    border: 1px solid transparent;
+//  background: linear-gradient(to top right, #f11197 0%, #e175a5 25%, #fff 100%);
+    background: linear-gradient(to top, #f11197 0%,  #fff 100%);
+		text-align: center;
+    .chanlangesbtn{
+        position: absolute;
+        right: 0;
+        top: 80px;
+        background: transparent;
+        border:0;
+        .img-en{
+            width: 36px;
+            height: auto;
+            display: inline-block;
+            margin-right: 5px;
+            position: relative;
+            top: 10px;
+        }
+    }
+    .logo{
+        margin-top: 140px;
+        width: 239px;
+        height: 282px;
+    }
+    .loginform{
+        width:600px ;
+        margin:106px auto 0;
+        form{
+            background: transparent;
+        }
+				.mui-input-group:before{
+					display:none;
+				}
+        .inpucom{
+            position: relative;
+            font-size: 32px;
+            color: $autoplace-color;
+            height: 50px;
+            line-height: 50px;
+        }
+        .mui-input-row label{
+            width: 20%;
+            padding:0;
+        }
+        .mui-input-row label .iconfont{
+            font-size:26px;
+            color: rgb(237,127,193);
+        }
+        .psw{
+            margin-top: 50px;
+            
+        }
+        .user,.psw{
+           @extend .inpucom;
+           input{
+               width: 80%;
+               margin-top: 5px;
+               @extend .inpucom; 
+           }
+           .mui-icon-clear{
+                @extend .eirsicon;
+            }
+        }
+        .fogetpsw{
+            margin-top: 30px;
+        }
+        .eirsicon{
+            position: absolute;
+            right: -10px;
+            top: 14px;
+           font-size: 30px;
+           margin-right: 32px;
+           &.ative{
+               color: #007aff;
+           }
+        }
+           
+        .mui-input-group .mui-input-row{
+            position: relative;
+            overflow:visible; 
+            padding:15px 0px 60px;
+            background: #fff; 
+            box-shadow:0 4px 11px  #fff; 
+            &:after{
+                background: transparent;
+                bottom: -16px;
+//              -webkit-transform: scaleY(1);
+//              -ms-transform: scaleY(1);
+//              transform: scaleY(1);
+                color: $autoplace-color;
+            }
+        }
+        button{
+            display: block;
+            width: 100%;
+            height: 78px;
+            border-radius: 8px;
+            font-size: 36px;
+            margin-top: 80px;
+            background: #ob8fe8;
+//          background: #;
+        }
+       
+    }
+}

@@ -1,0 +1,41 @@
+.remoteloginbox{
+    width: 100%;
+    height: 100%;
+    margin-top: 180px;
+    text-align: center;
+    font-family: "SourceHanSanCN-Medium";
+    .tipimg{
+        margin-right: -120px;
+        height: 200px;
+        margin-bottom: 48px;
+    }
+    .article{
+        margin:0 28px ;
+        text-align: left;
+        .tip{
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+        .aricleonetip{
+            text-align: justify;
+            text-indent: 64px;
+            font-size: 32px;
+            line-height: 50px;
+            color: #4d4d4d;
+            &.rutip{
+                 text-indent: 48.975px;
+            }
+        }
+        
+    }
+    .exit{
+        margin-top: 80px;
+        width:600px ;
+        height:78px ;
+        background: #fdb913;
+        font-size: 36px;
+        color: #333;
+        text-align: center;
+    }
+}

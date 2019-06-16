@@ -1,0 +1,662 @@
+<!--首页 produce by jack-->
+<template>
+  <div>
+  	<navigBar :ShowUsericon="true" :titleText="changlan['index']['sy']" :showRighticon="true"  :rightClass="`icon-letter`"  @checkMe="clickMe" @iconRight="goEmial"></navigBar>
+		<div class="indexmain">
+			<div class="inx_content">
+					<div class="cartgoing" v-show="getOderstatus">
+						<div class="going-info-card">
+			  		<div class="moneybox">{{parseInt(getOderData['money'])}}<span class="iconfont icon-lubu"></span></div>
+				  		<ul>
+				  				<li class="liitem cartheader">
+							    	<span>{{traveltype(getOderData['n_state'])}}</span>
+							    	<span class="f28" v-if="getOderData['n_state']==4">（{{getOderData['n_day']&&getOderData['n_day']==0.5?'半':getOderData['n_day']}}天）</span>
+							    </li>
+							    <li class="liitem">
+							    	<span class="iconfont icon-shijian time"></span>
+							    	<span class="timetxt">{{getOderData['time']}}</span>
+							    </li>
+							    <li class="liitem mt22">
+							    	<span class="iconfont icon-yuandianzuobiao time c1afa29"></span>
+							    	<span class="adrestxt">{{getOderData['start']}}</span>
+							    </li>
+							    <!--包车不显示终点-->
+							    <li v-if="getOderData['n_state']!=4" class="liitem mt22">
+							    	<span class="iconfont icon-yuandianzuobiao time cfdb914"></span>
+							    	<span class="adrentxt">{{getOderData['end']}}</span>
+							    </li>
+							    <li class="liitem mt26 a6 li_bz_tx" v-if="getOderData['bz']!=''">
+							    	<span class="iconfont icon-beizhu time a6"></span>
+							    	<span class="adrentxt">{{getOderData['bz']}}</span>
+							    </li>
+							    <li v-if="getOderData['n_state']!=6"  class="liitem mt22">
+							    	<span class="iconfont icon-ertongyouhui time et"></span>
+							    	<span>&nbsp;{{changlan['index']['ischilds']}} :</span>
+							    	<span class="adrentxt">{{getOderData['n_ischild']==0?changlan['index']['no']:isChildmotext(getOderData['vc_child_num'])}}</span>
+							    </li>
+							</ul>
+							<div class="btnlist">
+								<button  type="button" class="mui-btn  mui-btn-warning qxorderbtn" @click="qxorder(getOderData['id'])">{{changlan['index']['qxorder']}}</button>
+								<button  type="button" class="mui-btn mui-btn-warning orderbtn" @click="qrfn(getOderData['id'])">{{changlan['index']['qrorder']}}</button>
+							</div>
+							
+				  	</div>
+					</div>
+					<div class="unorderimg" v-if="!getOderstatus">
+							<img src="../assets/img/index/untraveltip.png" class="tipimgs" alt="北极熊猫" />
+							<p class="ptips">{{changlan['index']['imgorder']}}</p>
+					</div>
+					
+					<!--确认接单时计算司机当前位置到达乘客起点的预计到达时间-->
+					<div v-show="false" id="maps"></div>
+			</div>
+		</div>
+		<div class="inx_dispatch">
+			<div class="patch_btn">
+				<breathBtn ref="changstatus" @noDrive="noDrive" @yesDrive="yesDrive" :btnval="getDriverStyle?changlan['index']['nopatchcart']:changlan['index']['dispatchcart']"></breathBtn>
+			</div>
+		</div>
+		<audio id="myaudio" src="http://www.bjxm360.com/static/admin/music/music.mp3" controls="controls" hidden="true" ></audio>
+  </div>
+</template>
+
+<script>
+import breathBtn from '@/components/BreathButton';//呼吸按钮组件
+import navigBar from '@/components/navigBar';//呼吸按钮组件
+import mapMutations from 'vuex';
+export default {
+  data () {
+    return {
+    		ws:{},         //存储websocket
+    		uid:0,         //用户编码
+			  lan_statue:1   //语言缓存  1中文  2俄文
+    }
+  },
+  computed:{
+		//获取store里面数据 
+  	changlan(){
+  		return this.$store.state.langetype
+  	},
+  	getlatandlng(){
+  		return this.$store.state.latanlng
+  	},
+  	getOderstatus(){
+  		return this.$store.state.orderdata
+  	},
+  	getOderData(){
+  		return this.$store.state.driverData
+  	},
+  	getDriverStyle(){
+  		return this.$store.state.isOrderStyle
+  	},
+  	getwatchGps(){
+  		return this.$store.state.watchgps
+  	}
+  },
+  props:[],
+  methods: {
+  	//发起websocket
+  	setWs(){
+			var that = this;
+			var sendat = {uid:this.uid};
+			this.ws = new WebSocket("ws://39.104.118.90:1688/");
+			//连接成功
+			this.ws.onopen = function(){
+				console.log('连接成功');
+			}
+			
+			//接受数据
+			this.ws.onmessage = function(res){
+					var res = JSON.parse(res.data);
+					console.log('服务器返回消息',res);
+					if(res.type==1){
+						sendat.data = "";
+						that.ws.send(JSON.stringify(sendat))
+					}else if(res.type==3){
+						sendat.data = "ok";
+						that.ws.send(JSON.stringify(sendat))
+					}
+				
+			}
+			//连接断开
+			this.ws.onclose = function(){
+				//websocket断开 清除定位定时器
+				that.clearWatch();
+			}
+  	},
+  	clickMe(){
+  		if(this.getOderstatus){
+  			return false;
+  		}
+			this.$router.push("./center");
+  	},
+  	goEmial(){
+  		if(this.getOderstatus){
+  			return false;
+  		}
+  		this.$router.push("./email");
+  	},
+  	traveltype(val){
+			 var str=""; 
+			 switch (Number(val)){
+			 	case 1:
+			 		str = this.changlan['index']['jieji'];
+			 		break;
+			 	case 2:
+			 		str = this.changlan['index']['songji'];
+			 		break;
+			 	case 4:
+			 		str = this.changlan['index']['baoche'];
+			 		break;
+			 	case 6:
+			 		str = this.changlan['index']['zhuanxian'];
+			 		break;
+			 	default:
+			 		str = this.changlan['index']['taxi'];
+			 		break;
+			 }
+		  return str;
+		},
+  	clienIsleave(){
+  		var jsondata = {
+				vc_drcode:this.uid,
+				type:1
+			};
+			var url = this.$BaseUrll+"/index/updateAppState";
+			var that = this;
+			//应用从前台切换到后台
+  		document.addEventListener("pause", function () {
+						jsondata.type = 2;
+//						mui.post(url,jsondata,function(data){
+//								var data = JSON.parse(data);
+//								if(data['status']==1){
+////										mui.toast("应用从前台切换到后台");								
+//								}else{
+//									
+//									return false;
+//								}
+//							},"json");
+			}, false);
+			
+			//应用从后台切换到前台		
+			document.addEventListener("resume", function () {
+					jsondata.type = 1;
+//						mui.post(url,jsondata,function(data){
+//								var data = JSON.parse(data);
+//								if(data['status']==1){
+////									mui.toast("应用从后台切换到前台");		
+//										
+//								}else{
+//									
+//									return false;
+//								}
+//							},"json");
+					//如果是接单状态就重新接单
+					if(that.getDriverStyle){
+						that.setWs();
+					}
+						
+			}, false);
+  	},
+		isLogin(){//是否为登录状态
+				this.uid = window.localStorage.getItem("uid");
+				if(!this.uid){
+					this.$router.push('./login');
+				}else{
+					return true;
+				}
+		},
+		//开始接单
+		yesDrive(){
+			var that = this;
+			var url = this.$BaseUrll+"/index/updateState";
+			var data = {
+				vc_drcode:this.uid,
+				n_state:2
+			};
+			try{
+				var wt=plus.nativeUI.showWaiting();
+			}catch(e){
+				//TODO handle the exception
+			}
+			
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					try{
+						wt.close();
+					}catch(e){
+					}
+					if(data['status']==1){
+
+						//开启呼吸动画
+						that.$refs.changstatus.changStyle(1);
+						
+						//继续接单
+						that.$store.commit("orderSatus",true);
+
+						//开始发送位置服务
+						that.sendLonLat();
+						
+						//开启websocket
+						that.setWs();
+						
+					}else{
+						that.btnStyle = "lineground";
+//						mui.toast(data['message'])
+						mui.toast(that.changlan['msgtip'][data['message']])
+						return false;
+					}
+				},"json"
+			);
+		},
+		//停止接单
+		noDrive(){
+			if(this.getOderstatus){
+  			return false;
+  		}
+			var that = this;
+			var url = this.$BaseUrll+"/index/updateState";
+			var data = {
+				vc_drcode:this.uid,
+				n_state:1
+			};
+			
+			try{
+				var wt=plus.nativeUI.showWaiting();
+			}catch(e){
+				//TODO handle the exception
+			}
+			mui.confirm(this.changlan['index']['stop'], this.changlan['index']['stopinquiry'], [this.changlan['index']['yes'],this.changlan['index']['no']], function(e) {
+				if (e.index != 1) {
+					mui.post(url,data,function(data){
+							try{
+								wt.close();
+							}catch(e){
+								//TODO handle the exception
+							}
+							var data = JSON.parse(data);
+							if(data['status']==1){
+								
+								//关闭呼吸动画
+								that.$refs.changstatus.changStyle(2);
+								
+								//停止接单
+								that.$store.commit("orderSatus",false);
+								
+								//关闭监听位置信息
+								that.clearWatch();
+								//通知关闭websokect
+								var sendat = {uid:that.uid,data:"close"};
+								that.ws.send(JSON.stringify(sendat));
+								
+							}else{
+								mui.toast(that.changlan['msgtip'][data['message']])
+								return false;
+							}
+						},"json"
+					);
+				}else{
+					//开启呼吸动画
+					that.$refs.changstatus.changStyle(1);
+					try{wt.close();}catch(e){}
+				}
+			})
+		},
+		//取消订单
+  	qxorder(id){
+  		var that =this;
+  		//再此询问是否要取消订单
+	    mui.confirm(this.changlan['index']['starnumtip'], this.changlan['index']['noyesinquiry'], [this.changlan['index']['yes'],this.changlan['index']['no']], function(e) {
+	        if (e.index != 1) {
+							
+	            var url = that.$BaseUrll+"/index/refusal";
+							var data = {
+								vc_drcode:that.uid,
+								vc_order_sn:id
+							};
+//							console.log(data);
+							mui.post(url,data,function(data){
+									var data = JSON.parse(data);
+									if(data['status']==1){
+										
+										mui.toast(that.changlan['msgtip'][data['message']])
+										
+										//关闭订单弹窗框
+										that.$store.commit("chcunkOder",false);
+										
+										that.yesDrive();
+											
+										return false;
+									}else{
+										mui.toast(that.changlan['msgtip'][data['message']])
+										return false;
+									}
+								},"json"
+							);
+	        }
+	    })
+  	},
+  	//确认订单
+		qrfn(id){
+			var maps = new google.maps.Map(document.getElementById('maps'), {});
+			var that = this;
+			var directionsService = new google.maps.DirectionsService;
+			var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+			directionsDisplay.setMap(maps);
+			try{var wt=plus.nativeUI.showWaiting();}catch(e){};
+			
+			//获取当前司机的位置
+			var startjw = that.getlatandlng;
+			
+			//获取用户的起点
+			var endjw = JSON.parse(that.getOderData.startjw);
+			
+			
+			var url = that.$BaseUrll+"/index/successOrder";
+					var data = {
+						vc_drcode:that.uid,
+						vc_order_sn:id
+					};
+					
+//					alert(JSON.stringify(data));
+
+					mui.post(url,data,function(data){
+							var data = JSON.parse(data);
+						
+							if(data['status']==1){
+								
+									try{wt.close();}catch(e){}
+									
+									//接单成功，跳转到订单详情页
+									that.$router.push({ name:'dispatch',query:{ satus: 0}})
+	
+							}else{
+								mui.toast(that.changlan['msgtip'][data['message']])
+								return false;
+							}
+						},"json"
+					);
+			
+		},
+		autolangs(){
+			if(this.lan_statue!=null){
+					if(this.lan_statue!=2){
+						this.types = false;
+						this.$store.commit("cnlange",'cn');
+					}else{
+						this.types = true;
+						this.$store.commit("cnlange",'ru');
+					}
+			}
+		},
+		//获取当前订单信息
+		getOrderInfo(order){
+			var url = this.$BaseUrll+"/index/getOrderInfo";
+			var that =this;
+				var data = {
+					vc_drcode:this.uid,
+					order:order
+				};
+				mui.post(url,data,function(data){
+							var data = JSON.parse(data);
+							if(data['status']==1){
+									var dipatchData = {
+										id:data.data.vc_order_sn,
+									 	money:data.data.n_pay_money,
+									 	time:data.data.dt_starttime,
+									 	start:data.data.vc_start_place,
+										end:data.data.vc_destination,
+										bz:data.data.vc_remarks,
+										startjw:data.data.vc_startjw,
+										endjw:data.data.vc_endjw,
+										//出行方式
+										n_state:data.data.n_state,
+										//是否携带儿童  0没有 1携带
+										n_ischild:data.data.n_ischild,
+										//携带儿童数量
+										vc_child_num :data.data.vc_child_num ,
+										//包车天数
+										n_day:data.data.n_day
+									}
+
+									//显示订单数据框
+									that.$store.commit("changedriverData",dipatchData);
+									that.$store.commit("chcunkOder",true);
+								
+							}else{
+								mui.toast(that.changlan['msgtip'][data['message']])
+								return false;
+							}
+						},"json"
+					);
+		},
+		//跳转到多方登录退出页面
+		checkOrder(){
+
+				var that = this;
+				var url = this.$BaseUrll+"/index/updateState";
+				var data = {
+					vc_drcode:this.uid,
+					n_state:1
+				};
+
+				mui.post(url,data,function(data){
+
+							window.localStorage.removeItem("uid");
+							that.clearWatch();
+							that.$router.push("./remotelogin");
+
+					},"json"
+				);
+		},
+		//开启发送位置请求
+		sendLonLat(){
+			var that = this;
+
+			//每隔一段时间把最新的位置信息传递给后台
+		  var watchId = setInterval(function(){
+				 try{
+					plus.geolocation.getCurrentPosition(function (p){
+						var codns = p.coords;
+//						console.log('经纬度',codns);
+						if(codns['longitude'].toString().indexOf("-")>-1 || codns['latitude'].toString().indexOf("-")>-1){
+							return false;
+						}else{
+							var data = {
+								vc_drcode:that.uid,
+								longitude:codns.longitude,//获取到当前位置的经度
+								latitude:codns.latitude   //获取到当前位置的纬度
+							};
+//							console.log(JSON.stringify(data),'定位信息');
+							//发送坐标到后台
+							var url = that.$BaseUrll+"/index/updateJw";
+							mui.post(url,data,function(data){
+									var data = JSON.parse(data);
+									
+									if(data['status']!=1){
+										mui.toast(that.changlan['msgtip'][data['message']])
+										return false;
+									}else{
+										var lnglat = {
+													'lat':codns.latitude,
+													'lng':codns.longitude
+												}
+										//讲此次经纬度保存到全局，已备接单时使用
+										that.$store.commit("setPos",lnglat);
+									}
+									
+								},"json"
+							);
+						}
+
+					}, function ( e ) {
+						alert( "获取位置信息失败："+e.message );
+					}, {geocode:true,provider:'amap'} );
+				}catch(e){
+					console.log("真实的移动端设备，定位服务抛出异常")
+				}
+				
+			},10000)
+			that.$store.commit("changeGps",watchId);
+		},
+		//停止发送位置变化信息
+		clearWatch() {
+			if(this.getwatchGps){
+				clearInterval(this.getwatchGps);
+			}
+		},
+		isOrder(){
+			var url = this.$BaseUrll+"/index/getOrderInfo";
+			var that =this;
+				var data = {
+					vc_drcode:this.uid,
+					order:1
+				};
+				mui.post(url,data,function(data){
+							var data = JSON.parse(data);
+							if(data['status']==1){
+									var dipatchData = {
+										id:data.data.vc_order_sn,
+									 	money:data.data.n_pay_money,
+									 	time:data.data.dt_starttime,
+									 	start:data.data.vc_start_place,
+										end:data.data.vc_destination,
+										bz:data.data.vc_remarks,
+										startjw:data.data.vc_startjw,
+										endjw:data.data.vc_endjw,
+										//出行方式
+										n_state:data.data.n_state,
+										//是否携带儿童  0没有 1携带
+										n_ischild:data.data.n_ischild,
+										//携带儿童数量
+										vc_child_num :data.data.vc_child_num ,
+										//包车天数
+										n_day:data.data.n_day
+									}
+
+									//显示订单数据框
+									that.$store.commit("changedriverData",dipatchData);
+//									that.$store.commit("chcunkOder",true);
+									that.$router.push({ name:'dispatch',query:{ satus: data.data.n_isdckqd}});
+								
+							}
+						},"json"
+					);
+		},
+		//儿童方式
+		isChildmotext(val){
+			var arr = val.split(',');
+			var str = "";
+			if(arr[0] != 0){
+				str += '0~3岁儿童'+arr[0]+'位';
+			}
+			if(arr[1] != 0){
+				str += '3~7岁儿童'+arr[1]+'位';
+			}
+			return str;
+		}
+	},
+	components:{
+		breathBtn,
+		navigBar
+	},
+	created:function(){
+		//登录
+		this.isLogin();
+		//获取语言缓存状态
+		this.lan_statue = window.localStorage.getItem('lange_type');
+	},
+	mounted:function(){
+		
+//		this.getOrderInfo('c9a1e6ca07d8e120d14f5bdacac23478');
+		
+		//语言缓存
+		this.autolangs();
+		
+		//判断是否有未完成订单
+		this.isOrder();
+		
+		//判断如果是继续接单状态 type=1是继续接单  type=2是显示订单
+		var type = this.$route.params.type?this.$route.params.type:0;
+		if(type == 1){
+			//判断出车按钮动画是开启还是关闭
+			if(this.getDriverStyle){
+
+				this.$refs.changstatus.changStyle(1);
+				
+			}else{
+				this.$refs.changstatus.changStyle(2);
+			}
+		}else if(type==2){
+			 var order = this.$route.params.order;
+			 this.getOrderInfo(order);
+		}else{
+			this.clearWatch();
+		}
+		this.clienIsleave();
+		
+		mui.back =function(){
+			return false;	
+		}
+		//监听推送消息事件处理逻辑
+		var that = this;
+		document.addEventListener( "plusready", function(){
+		    // 监听在线消息事件
+		    plus.push.addEventListener( "receive", function( msg ) {
+		        if ( msg.aps ) {  // Apple APNS message
+		            alert( "接收到在线APNS消息：" );
+		        } else {
+		        		
+		        		var data = JSON.parse(msg.content);
+		        		
+		        		//type= 1新订单，2多方登录，3下载更新，4消息推送
+		        		if(data.type==1){
+		        			if(that.$router['history']['current']['name']=="Index"){
+		        					that.isLogin();
+		        					var myAuto = document.getElementById('myaudio');
+											myAuto.play();
+		        					that.getOrderInfo(data.order);
+		        				
+		        			}else{
+		        				that.$router.push({ name:'Index', params: {type: 2,order:data.order} });
+		        			}
+		        			
+		        		}else if(data.type==2){
+		        			that.isLogin();
+		        			that.checkOrder();
+
+		        		}else if(data.type==3){
+		        			that.$router.push("./updatapp");
+		        		}else if(data.type==4){
+		        			that.$router.push("./email");
+		        		}
+		        }
+		    }, false );
+		}, false );
+
+	}
+}
+
+</script>
+<style>
+	body,html,#app{
+		width: 100%;
+		height: 100%;
+	}
+	body{
+		overflow: hidden;
+		background: #f5f5f5 !important;
+		font:16px/32px "SourceHanSanCN-Medium";
+	}
+	#app{
+		text-align: left;
+	}
+	.li_bz_tx{
+		display: flex;
+	}
+</style>
+<style lang="scss" scoped>
+@import "../assets/css/minx.scss";
+@import "../components/css/ordercard.scss";
+@import "../assets/css/index.scss";
+</style>

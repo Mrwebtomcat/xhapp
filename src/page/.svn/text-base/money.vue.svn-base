@@ -1,0 +1,232 @@
+<!--个人中心 -->
+<template>
+	<div class="moneymdoul">
+		<navigBar :ShowUsericon="true"  :requreClass="`icon-fanhui`"  :titleText="changlan['money']['title']" @checkMe="clickMe"></navigBar>
+		<div class="money_cardchead">
+			<div class="numbermoney">
+				<span class="iconfont icon-weibiaoti-1 money-icon"></span>
+				<span  class="moneytext">{{parseInt(userMoney)}}</span>
+			</div>
+			<!--<button type="button" class="mui-btn cash">{{changlan['money']['cash']}}</button>-->
+		</div>
+		
+		<!--全部，收入，支出 选项卡-->
+		<div class="xxk">
+			<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary">
+				<span :class="active==1?'mui-control-item mui-active':'mui-control-item'" @tap="typeClick(1)">
+					{{changlan['money']['all']}}
+				</span>
+				<span :class="active==2?'mui-control-item mui-active':'mui-control-item'" @tap="typeClick(2)">
+					{{changlan['money']['income']}}
+				</span>
+				<span :class="active==3?'mui-control-item mui-active':'mui-control-item'" @tap="typeClick(3)">
+					{{changlan['money']['expenditure']}}
+				</span>
+			</div>
+		</div>
+		
+		<!--滚动区间-->
+		<div class="money_contxt">
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div class="mui-scroll tabvie-con">
+					<ul class="mui-table-view mui-table-view-chevron">
+	
+						<li class="mui-table-view-cell" v-for="item in moneyList">
+							<div class="celltop">{{item.vc_source}}</div>
+							<div class="cellbottom">{{item.dt_addtime}}</div>
+							<div v-if='item.n_type == 1' class="cellshownum fdb913">+{{item.vc_money}}</div>
+							<div v-else class="cellshownum a9cf5">-{{item.vc_money}}</div>
+						</li>
+	
+					</ul>
+					<div v-show="showImg"  class="imgtips">
+						<img src="../assets/img/index/unmoneytip.png" alt="" />
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</template>
+<script>
+import navigBar from '@/components/navigBar'; //navBartop 状态栏组件
+import tabview from '@/components/tabView'; //信息卡片组件
+import grid from '@/components/Grid'; //九宫格
+import { mapGetters, mapMutations } from 'vuex';
+export default {
+	data() {
+		return {
+			showImg:false,
+			active:1, //默认显示全部类型
+			uid:0,
+			userMoney:0,
+			type: 1, //1全部  2收入  3支出
+			page: 1, //页码
+			pageNum: 10, //每页显示的条数
+			moneyList: [
+//					{
+//						vc_money: "100",
+//						vc_source: "收到车费",
+//						dt_addtime: "2018-09-08 10:10:10",
+//						n_type: 1
+//					}
+				] //数据集合
+		}	
+	},
+	computed: {
+		//获取store里面数据 
+		changlan() {
+			return this.$store.state.langetype
+		}
+	},
+	props: [],
+	methods: {
+		clickMe() {
+			this.$router.go(-1)
+		},
+		//获取用户的当前金额
+		getUserMoney(){
+			this.uid = window.localStorage.getItem("uid");
+			if(!this.uid){
+				this.$router.push('./login');
+			}
+			var url = this.$BaseUrll+"/Member/index";
+			var data = {
+				vc_drcode:this.uid,
+				type:2
+			};
+
+			var that = this;
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					if(data['status']==1){
+						that.userMoney = data['data']['vc_money'];
+						that.startUp();
+						
+					}else{
+						mui.toast(that.changlan['msgtip'][data['message']])
+						return false;
+					}
+				},"json"
+			);
+		},
+		//切换请求类型
+		typeClick(type){
+			this.type = type;
+			this.moneyList = [];
+			this.page = 1;
+			this.showImg = false;
+			this.getData();
+			//重置mui下拉加载
+			mui('#pullrefresh').pullRefresh().refresh(true);
+			//回到顶部
+			mui('#pullrefresh').pullRefresh().scrollTo(0, 0, 500);
+			
+		},
+		//页面第一次自动加载ajax
+		startUp() {
+			var that = this;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height: 50, //可选.默认50.触发上拉加载拖动距离
+						auto: true, //可选,默认false.自动上拉加载一次
+						contentrefresh: that.changlan['money']['refreshingtip'],//key*
+						contentnomore: that.changlan['money']['nomoretip'],//*key*
+						callback: that.getData
+					}
+				}
+			});
+		},
+		//请求ajax
+		getData() {
+			var that = this;
+			setTimeout(function(){
+					var url = that.$BaseUrll + "/Member/moneyList";
+					var data = {
+						vc_drcode:that.uid,
+						page: that.page,
+						pageNum: that.pageNum,
+						type: that.type
+					};
+					mui.post(url, data, function(data) {
+						var data = JSON.parse(data);
+						if(data['status'] == 1) {
+							
+							var list = data['data'];
+							
+							for(var i=0; i<list.length; i++){
+								var arr = {};
+								arr.vc_money = list[i]['vc_money'];
+								arr.vc_source = list[i]['vc_source'];
+								arr.dt_addtime = list[i]['dt_addtime'];
+								arr.n_type = list[i]['n_type'];
+								that.moneyList.push(arr);
+							}
+							that.page++;
+							if(list.length == that.pageNum){
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+							}else{
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							}
+						} else {
+							if(that.moneyList.length>0){
+								that.showImg = false;
+							}else{
+								that.showImg = true;
+							}
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+							return false;
+						}
+					}, "json");
+			},100)
+		}
+	},
+	components: {
+		navigBar,
+		tabview
+	},
+	created() {
+		this.getUserMoney();
+		for(var i = mui.hooks.inits.length-1,item;i>=0;i--){
+	          item=mui.hooks.inits[i];
+	          if(item.name=="pullrefresh"){
+	              item.repeat=true;
+	          }
+	    }
+	},
+	mounted() {
+		var that = this;        		
+    	mui.back = function(){
+    		that.$router.push("./center")
+    	}
+	}
+}
+</script>
+<style type="text/css">
+	.moneymdoul .mui-pull-caption-nomore{
+        font-size:24px;
+    }
+	.moneymdoul .mui-pull-bottom-pocket{
+       margin-bottom: 0.5rem;
+    }
+    .tabvie-con ul{
+    	margin-bottom: 20px;
+    }
+    .moneymdoul{
+    	width: 100%;
+    	height: 100%;
+    }
+    .money_contxt{
+    	width: 100%;
+    	height:calc(100% - 445px);
+    	padding-top: 15px;
+    	box-sizing: border-box;
+    }
+</style>
+<style lang="scss" scoped>
+	@import "../assets/css/minx.scss";
+	@import "../assets/css/money.scss";
+</style>

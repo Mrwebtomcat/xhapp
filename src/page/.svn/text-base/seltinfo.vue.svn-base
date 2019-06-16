@@ -1,0 +1,168 @@
+<!--个人中心 -->
+<template>
+	<div class="selinfocon">
+		<navigBar :ShowUsericon="true"  :requreClass="`icon-fanhui`"  :titleText="changlan['selftinfo']['title']" @checkMe="clickMe"></navigBar>
+		<div class="mui-content">
+		   <ul class="mui-table-view mui-table-view-chevron ulcon">
+				<li class="mui-table-view-cell mui-media">
+					<router-link tag="a" class="mui-navigate-right" :to="{name:'imagesc',query:{imgsrc:userImg,text:changlan['selftinfo']['headport']}}">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['headport']}}
+						</span>
+						<div class="mui-media-body"></div>
+					</router-link>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['username']}}
+						</span>
+						<span class="righttext">
+							{{userName}}
+						</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['userphone']}}
+						</span>
+						<span class="righttext">
+							{{userPhone}}
+						</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mt18">
+					<router-link tag="a" class="mui-navigate-right" :to="{name:'imagesc',query:{imgsrc:vc_pc_img,text:changlan['selftinfo']['grouphoto']}}">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['grouphoto']}}
+						</span>
+						<div class="mui-media-body"></div>
+					</router-link>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<router-link tag="a" class="mui-navigate-right" :to="{name:'imagesc',query:{imgsrc:vc_jz_img,text:changlan['selftinfo']['driverphoto']}}">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['driverphoto']}}
+						</span>
+						<div class="mui-media-body"></div>
+					</router-link>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<router-link tag="a" class="mui-navigate-right":to="{name:'imagesc',query:{imgsrc:vc_xsb_img,text:changlan['selftinfo']['dirvringcard']}}">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['dirvringcard']}}
+						</span>
+						<div class="mui-media-body"></div>
+					</router-link>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<router-link tag="a" class="mui-navigate-right" :to="{name:'imagesc',query:{imgsrc:vc_hz_img,text:changlan['selftinfo']['passport']}}">
+						<span class="mui-media-object mui-pull-left">
+							{{changlan['selftinfo']['passport']}}
+						</span>
+						<div class="mui-media-body"></div>
+					</router-link>
+				</li>
+			</ul>
+		</div>
+		<div class="mui-backdrop" v-if="isShowImg" @click="hideImg()" style="text-align: center;">
+			<img :src="img" alt="" class="img"/>
+		</div>
+	</div>
+</template>
+<script>
+	import navigBar from '@/components/navigBar'; //navBartop 状态栏组件
+	import { mapGetters, mapMutations } from 'vuex';
+	export default {
+		data() {
+			return {
+				userName:'北极熊猫',
+				userImg:'/static/home/img/logo.jpg',
+				userPhone:'17710900441',
+				vc_pc_img:'',
+				vc_hz_img:'',
+				vc_jz_img:'',
+				vc_xsb_img:'',
+				img:'',            //当前展示图片
+				isShowImg:false    //是否显示遮罩层
+			}	
+		},
+		computed: {
+			//获取store里面数据 
+			changlan() {
+				return this.$store.state.langetype
+			}
+		},
+		props: [],
+		methods: {
+			clickMe() {
+				this.$router.go(-1)
+			},
+			//获取用户信息接口
+			getUserInfo(){
+				var uid = window.localStorage.getItem("uid");
+				if(!uid){
+					this.$router.push('./login');
+				}
+				var url = this.$BaseUrll+"/Member/index";
+				var data = {
+					vc_drcode:uid,
+					type:3
+				};
+	
+				var that = this;
+				mui.post(url,data,function(data){
+						var data = JSON.parse(data);
+						if(data['status']==1){
+							that.userName = data['data'].vc_name;
+							if(data['data'].vc_hred_img != '0'){
+								that.userImg = data['data'].vc_hred_img;
+							}
+							that.userPhone = data['data'].vc_phone;
+							that.vc_pc_img = data['data'].vc_pc_img;
+							that.vc_hz_img = data['data'].vc_hz_img;
+							that.vc_jz_img = data['data'].vc_jz_img;
+							that.vc_xsb_img = data['data'].vc_xsb_img;
+							
+						}else{
+							mui.toast(data['message'])
+							return false;
+						}
+					},"json"
+				);
+			},
+			//展示图片
+			showImg(imgUrl){
+				this.img = "http://www.bjxm360.com/"+imgUrl;
+				this.isShowImg = true;
+			},
+			//关闭图片
+			hideImg(){
+				this.isShowImg = false;
+			}
+		},
+		components: {
+			navigBar
+		},
+		created() {
+			this.getUserInfo();
+		},
+		mounted() {
+			var that = this;        		
+        	mui.back = function(){
+        		that.$router.push("./center")
+        	}
+		}
+
+	}
+</script>
+<style lang="scss" scoped>
+	@import "../assets/css/minx.scss";
+	@import "../assets/css/selinfo.scss";
+	.img{
+		width: 66%;
+		max-height:55% ;
+		margin-top: 25%;
+	}
+</style>

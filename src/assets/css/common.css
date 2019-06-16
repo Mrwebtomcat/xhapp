@@ -1,0 +1,58 @@
+body,html,#app{
+	width: 100%;
+	height: 100%;
+}
+body {
+	overflow: hidden;
+	background: #f5f5f5 !important;
+	font: 16px/32px "SourceHanSanCN-Medium";
+}
+ul,li{
+	list-style: none;
+}
+.f28{
+	font-size: 28px;
+}
+.f30{
+	font-size: 30px;
+}
+.mt80px{
+	margin-top: 80px;
+}
+
+/* 图标公共模板部分 */
+.zjcard,.zjvip,.zjstart{
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	margin-right: 20px;
+}
+.zjcard{
+	background: url(../img/index/card1.png) no-repeat;
+	background-size: contain;
+}
+
+.zjvip{
+	background: url(../img/index/vip1.png) no-repeat;
+	background-size: contain;
+}
+
+.zjstart{
+	background: url(../img/index/start1.png) no-repeat;
+	background-size: contain;
+}
+
+.zjcard.active{
+	background: url(../img/index/card2.png) no-repeat;
+	background-size: contain;
+}
+
+.zjvip.active{
+	background: url(../img/index/vip2.png) no-repeat;
+	background-size: contain;
+}
+
+.zjstart.active{
+	background: url(../img/index/start2.png) no-repeat;
+	background-size: contain;
+}

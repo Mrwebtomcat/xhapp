@@ -1,0 +1,60 @@
+.jcdilogo{
+    z-index: 1002;
+    position: absolute;
+    top: 389.25px;
+    width: 664px;
+    height: 425px;
+    border-radius: 10px;
+    background: #fff;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+    .yesicon{
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 115px;
+        height: 115px;
+        background:#fff;
+        top:-51.25px;
+        margin: auto;
+        line-height: 115px;
+        border-radius: 50%;
+        .icon-dui{
+            color: #18cf69;
+            font-size:105px;
+        }
+    }
+    .dignotice{
+        margin-top: 81.25px;
+        font:32px/64px  "'SourceHanSanCN-Medium";
+        color: #ff8700;
+    }
+    .continuar{
+        margin-top: 14px;
+        font-size: 36px;
+        color: $c-333;
+    }
+    button{
+        height: 80px;
+        width: 608px;
+        font-size: 36px;
+        color: $c-fff;
+        margin-top: 32px;
+        border-radius: 8px;
+        &.jx{
+            margin-top: 20px;
+        }
+        
+    }
+}
+.shadoxs{
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}

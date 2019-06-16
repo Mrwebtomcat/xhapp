@@ -1,0 +1,29 @@
+$autoplace-color:#3d465d;
+$c-fff:#fff;
+
+.title{
+    color:$c-fff;
+    font-size: 40px;
+    background: linear-gradient(#8070f1,#b06cef);
+    height: 80px;line-height: 80px;
+    text-align: center;
+    position:fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1200;
+    .useicon{
+        position: absolute;
+        left: 28px;
+        top: 0;
+        color: #fff;
+        font-size: 40px;
+    }
+    .righicon{
+        position: absolute;
+        right: 28px;
+        top: 0;
+        color: #fff;
+        font-size: 40px;
+    }
+} 

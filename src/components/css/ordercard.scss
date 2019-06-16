@@ -1,0 +1,174 @@
+.going-info-card{
+    position: relative;
+   margin:auto;
+   padding-top: 10%;
+// transform: translateY(126px);
+   width: 694px;
+   min-height: 416px;
+   border-radius: 10px;
+   padding:40px 18px;
+   border: 3px solid $c-fdb913;
+   text-align: left;
+   ul{
+       margin: 0;
+       padding: 0;
+       list-style: none;
+   }
+   li{
+       @extend ul;
+       .time{
+           font-size: 28px;
+       }
+       .et{
+           color: #f15aad;
+       }
+       .timetxt{
+           @extend .time;
+           color: #333;
+       }
+       .adrestxt{
+            @extend .time;
+       }
+       .adrentxt{
+           @extend .time;
+       }
+   }
+   .mui-popup-backdrop{
+       z-index: 10000;
+   }
+   .orderbtn{
+//     position: absolute;
+//     right: 18px;
+//     bottom: 40px;
+//     width: auto;
+       padding:0 25px;
+       height: 60px;
+       line-height: 60px;
+       font-size: 30px;
+       color: #333;
+        background: #18cf69;
+       border-radius: 6px;
+       border: 0.013333rem solid #18cf69;
+   }
+   .btnlist{
+//     position: absolute;
+//     left: 0;
+       width: 100%;
+//     bottom: 40px;
+       margin-top: 40px;
+       text-align: right;
+//     padding-right: 18px;
+       
+   }
+   .cartheader{
+       font-weight: 600;
+   }
+   .qxorderbtn{
+//     position: absolute;
+//     right: 210px;
+//     bottom: 40px;
+       width: auto;
+       padding:0 25px;
+       height: 60px;
+       line-height: 60px;
+       font-size: 30px;
+       color: #333;
+       background: #FDB914;
+       border-radius: 6px;
+       margin-right: 10px;
+   }
+   .detialbtn{
+       border-radius: 6px;
+       width: 100%;
+       height: 80px;
+//     margin:80px auto 0;
+       font-size: 36px;
+       color: $c-333;
+       background: $c-fdb913;
+   }
+   .mb1rem{
+       margin-bottom: 30px;
+   }
+   .psr{
+       position: relative;
+   }
+   .cartheader{
+       text-align: center;
+       margin-bottom: 18px;
+       font-size: 32px;
+   }
+   .moneybox{
+       position: absolute;
+       right: 18px;
+       top: 95px;
+       width: auto;
+       font-size: 40px;
+       color: #333;
+       .icon-lubu{
+           font-size: 14px;
+       }
+   }
+   .mt22{
+       margin-top: 22px;
+   }
+   .mt26{
+      margin-top: 26px;
+   }
+   .cfdb914{
+       color: #FDB914;
+   }
+   .c1afa29{
+       color: #1afa29;
+   }
+   .a6{
+       color: #a6a6a6;
+       margin:{
+           left:1px;
+           right: 2px;
+       }
+   }
+}
+
+//dispath
+.patchdetailcon{
+   @include w100h100;
+   @include psr;
+    .navbar{
+        z-index: 999;
+        @include posa;
+        left: $w0;
+        top: $w0;
+        width: $w100;
+    }
+    .usecard{
+      z-index: 1000;
+      @include posa; 
+      background: $c-fff; 
+      width: $w100;
+      height:calc(47% - 80px);
+      left: $w0;
+      bottom: $w0;
+      .going-info-card{
+          width: $w100;
+//        min-height: 469px;
+          height: 100%;
+          -webkit-transform:translateY($w0);
+          transform:translateY($w0);
+          text-align: left;
+          border: transparent;
+          ul{
+             li{
+                 display: flex;
+             }
+            .adrestxt{
+               word-break: break-all;
+               margin-left: 4px;
+            }
+            .timetxt{
+                margin-left: 8px;
+            }
+          }
+      }
+      
+    }
+}

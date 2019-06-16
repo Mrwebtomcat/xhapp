@@ -1,0 +1,134 @@
+.money_cardchead{
+    @include posr;
+    margin-top: 80px;
+    height: 294px;
+    width: 100%;
+    background: linear-gradient(#3e465e,#111b30);
+    .numbermoney{
+        @include posa;
+        @include left0;
+        @include right0;
+        height: 50px;
+        top: 100px;
+        margin: auto;
+        text-align: center;
+        .money-icon{
+            color: #fdb913;
+            font-size: 64px;
+        }
+        .moneytext{
+            color: $c-fff;
+            font-size: 64px;
+        }
+    }
+    .cash{
+        @include posa;
+        @include left0;
+        @include right0;
+        top: 230px;
+        margin: auto;
+        width: 468px;
+        height: 78px;
+        color: #333;
+        font-size: 36px;
+        background: #FDB913;
+        border-radius: 4px;
+    }
+}
+.tabvie-con{
+    .mui-table-view{
+        text-align: left;
+       
+        &:before{
+            background: transparent;
+        }
+    }
+     .mui-table-view-cell:active{
+         background: transparent;
+     }
+    .mui-table-view-cell{
+        padding: 28px 28px 20px;
+        height: 120px;
+        border-top: 1px solid #f5f5f5;
+       @include posr;
+        &:after{
+             background: #d1d1d1;
+        }
+        .celltop{
+            font-size: 32px;
+            color: #333;
+        }
+        .cellbottom{
+            margin-top: 18px;
+            font-size: 24px;
+            color: #a6a6a6;
+        }
+        .cellshownum{
+            @include posa;
+            font-size: 32px;
+            height: 32px;
+            top: 0px;
+            bottom: 0;
+            margin: auto;
+            right: 28px;
+            &.a9cf5{
+                color: #1a9cf5;
+            }
+            &.fdb913{
+                color: #fdb913;
+            }
+        }
+    }
+}
+.moneymdoul{
+        .xxk{
+           background: rgb(255, 255, 255);
+//         height: 50px;
+           position: relative;
+           z-index: 9999;
+           .mui-segmented-control{
+//              position: absolute;
+//              top: -50px;
+//              left: 0;
+//              right: 0;
+//              margin:auto;
+                width: 100%;
+                height: 100px;
+                background: #fff;
+                box-shadow:0 0 30px #000;
+                &.mui-segmented-control-inverted{
+                
+                }
+                .mui-control-item{
+                    height: 100%;
+                    line-height: 100px
+                    ;
+                    color: #121b30;
+                    font-size: 34px;
+                    &.mui-active{
+                        color: #FDB913;
+                        border-bottom: 0;
+                    }   
+                }
+                
+            }
+        }
+        #pullrefresh{
+//          top: 445px;
+//          height:64vh;
+            top: 0;
+            height: 100%;
+//          padding-top: 15px;
+//          overflow-y: scroll;
+            .imgtips{
+                text-align: center;
+                width: 100%;
+                img{
+                    margin: 50px auto 20px;
+                    width: 70%;
+                }
+            }
+            
+        }
+       
+    }

@@ -1,0 +1,167 @@
+<!--个人中心 -->
+<template>
+	<div>
+		<navigBar :ShowUsericon="true" :showRighticon="true" :requreClass="`icon-fanhui`" :rightClass="`icon-shezhi`" :titleText="changlan['center']['title']" @checkMe="clickMe" @iconRight="righconfig"></navigBar>
+		<div class="useinfocard">
+			<div class="cardlogo">
+				<img :src="userImg" alt="北极熊猫" />
+			</div>
+			<div class="cardright">
+				<div class="username">{{userName}}</div>
+				<start :items="userStar" :fen="changlan['center']['min']"></start>
+			</div>
+		</div>
+		<div class="centercon">
+			<grid :griddata="gidDtail"></grid>
+		</div>
+	</div>
+</template>
+<script>
+import navigBar from '@/components/navigBar'; //navBartop 状态栏组件
+import start from '@/components/Start'; //信息卡片组件
+import grid from '@/components/Grid'; //九宫格
+import { mapGetters, mapMutations } from 'vuex';
+export default {
+	data() {
+		return {
+			gidDtail: [{
+					itmename: "我的钱包",
+					icon: "icon-wallet",
+					routeurl:"money"
+				},
+				{
+					itmename: "我的行程",
+					icon: "icon-hangcheng_fill",
+					routeurl:"travel"
+				},
+				{
+					itmename: "我的信息",
+					icon: "icon-wodewodexinxi",
+					routeurl:"seltinfo"
+				},
+				{
+					itmename: "推荐有奖",
+					icon: "icon-tuijianyoujiang",
+					routeurl:""
+				},
+				{
+					itmename: "客服中心",
+					icon: "icon-kefu",
+					routeurl:"kefu"
+				},
+				{
+					itmename: "听单检测",
+					icon: "icon-anquanjiance",
+					routeurl:"detectionlisten"
+				}
+			],
+			userName:'北极熊猫',
+			userImg:'http://www.bjxm360.com/static/home/img/logo.jpg',
+			userStar:'50'
+		}
+	},
+	computed: {
+		//获取store里面数据 
+		changlan() {
+			return this.$store.state.langetype
+		},
+		getDriverStyle(){
+	  		return this.$store.state.isOrderStyle
+	  	}
+	},
+	props: [],
+	methods: {
+		//返回上一级
+		clickMe() {
+			if(this.getDriverStyle){
+				this.$router.push({ name:'Index', params: {type: 1} });
+			}else{
+				this.$router.push({ name:'Index', params: {type: 0} });
+			}
+		},
+		//点击设置
+		righconfig() {
+			this.$router.push("./config")
+		},
+		//获取用户信息接口
+		getUserInfo(){
+			var uid = window.localStorage.getItem("uid");
+			if(!uid){
+				this.$router.push('./login');
+			}
+			var url = this.$BaseUrll+"/Member/index";
+			var data = {
+				vc_drcode:uid,
+				type:1
+			};
+
+			var that = this;
+			mui.post(url,data,function(data){
+					var data = JSON.parse(data);
+					if(data['status']==1){
+						that.userName = data['data'].vc_name;
+						if(data['data'].vc_hred_img != '0'){
+							that.userImg = "http://www.bjxm360.com"+data['data'].vc_hred_img;
+						}
+						that.userStar = data['data'].vc_star;
+					}else{
+						mui.toast(data['message'])
+						return false;
+					}
+				},"json"
+			);
+		},
+		//开始默认设置语言模板
+		setLange(){
+			this.gidDtail[0]['itmename'] = this.changlan['center']['wallet'];
+			this.gidDtail[1]['itmename'] = this.changlan['center']['travel'];
+			this.gidDtail[2]['itmename'] = this.changlan['center']['info'];
+			this.gidDtail[3]['itmename'] = this.changlan['center']['rewrad'];
+			this.gidDtail[4]['itmename'] = this.changlan['center']['cusService'];
+			this.gidDtail[5]['itmename'] = this.changlan['center']['orderTest'];
+			console.log(this.gidDtail)
+		}
+	},
+	components: {
+		navigBar,
+		start,
+		grid
+	},
+	created() {
+		this.getUserInfo();
+		console.log(this.changlan)
+		this.setLange();
+	},
+	mounted() {
+		var that = this;
+		mui.back = function(){
+			if(that.getDriverStyle){
+				that.$router.push({ name:'Index', params: {type: 1} });
+			}else{
+				that.$router.push({ name:'Index', params: {type: 0} });
+			}
+		}
+	}
+
+}
+</script>
+<style>
+	.oli {
+		height: 225px !important;
+	}
+	.oli a {
+		display: block !important;
+		margin-top: 50px !important;
+		overflow: initial !important;
+		white-space: normal !important;
+	}
+	.grid .mui-grid-view.mui-grid-9 .mui-media,
+	.grid .mui-grid-view.mui-grid-9,
+	.grid .mui-content {
+		background: transparent;
+	}
+</style>
+<style lang="scss" scoped>
+	@import "../assets/css/minx.scss";
+	@import "../assets/css/center.scss";
+</style>
