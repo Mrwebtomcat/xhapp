@@ -22,7 +22,7 @@
     "vue-awesome-mui": "^1.7.3",
     "vue-mobile-calendar": "^3.0.6",
     "vue-router": "^3.0.1",
-    "vue-socket.io": "^2.1.1-b",
+    "vue-socket.io": "^3.0.10",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
